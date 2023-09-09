@@ -1,0 +1,62 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app-1">
+        Последнее обновление: {{tableData.lastUpdate}} </p>
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Связка</th>
+                <th scope="col">ASKS</th>
+                <th scope="col">BIDS</th>
+                <th scope="col">Время</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="val in tableData.value">
+                <th scope="row">{{val.currency}}</th>
+                <td>{{val.asks}}</td>
+                <td>{{val.bids}}</td>
+                <td>{{val.datetime}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app-1',
+            data: {
+                tableData: {},
+            }
+        })
+
+        setInterval(myTimer, 1000);
+        uptime = 0;
+        resp = ""
+        
+        function myTimer() {
+            url = "/data";
+            response = "";
+            fetch(url)
+                .then((response) => response.json())
+                .then((json) => parceData(json))
+        }
+    
+        //headerName = {'a', 'b'};
+        function parceData(json) {
+            console.log(json);
+            app.tableData = json
+            
+        }
+    </script>
+</body>
+</html>
